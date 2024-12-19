@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import './global.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+const CampaignList = () => <div className="card">Campaign List Page</div>;
+const NewCampaign = () => <div className="card">New Campaign Page</div>;
+const Navbar = () => <nav className="navbar">Campaign Manager</nav>;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="app">
+        <Navbar />
+        <main className="container">
+          <Routes>
+            <Route path="/" element={<CampaignList />} />
+            <Route path="/new-campaign" element={<NewCampaign />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 
