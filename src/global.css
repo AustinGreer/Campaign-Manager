@@ -142,3 +142,95 @@ th {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* Table Styles */
+.MuiTableContainer-root {
+  background-color: var(--background-paper) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  margin: 1rem 0;
+}
+
+.MuiTableCell-root {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+}
+
+.MuiTableCell-head {
+  background-color: var(--background-paper) !important;
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+.MuiTableRow-root:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.MuiTableSortLabel-root {
+  color: var(--text-secondary) !important;
+}
+
+.MuiTableSortLabel-root.Mui-active {
+  color: var(--primary-color) !important;
+}
+
+.MuiTableSortLabel-icon {
+  color: var(--primary-color) !important;
+}
+
+/* Filter Styles */
+.MuiTextField-root {
+  background-color: var(--background-paper) !important;
+}
+
+.MuiInputLabel-root {
+  color: var(--text-secondary) !important;
+}
+
+.MuiInputLabel-root.Mui-focused {
+  color: var(--primary-color) !important;
+}
+
+.MuiOutlinedInput-root {
+  color: var(--text-primary) !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--primary-color) !important;
+}
+
+/* Select Menu Items */
+.MuiMenu-paper {
+  background-color: var(--background-paper) !important;
+  color: var(--text-primary) !important;
+}
+
+.MuiMenuItem-root {
+  color: var(--text-primary) !important;
+}
+
+.MuiMenuItem-root:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+.filter-controls {
+  margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+}
+
+.filter-control {
+  min-width: 200px !important;
+}
