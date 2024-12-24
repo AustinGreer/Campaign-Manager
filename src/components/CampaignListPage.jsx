@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 
 import { getAllCampaigns } from '../services/campaignApi';
-import CampaignListTable from '../components/CampaignListTable';
-import CampaignListFilters from '../components/CampaignListFilters';
+import CampaignListTable from './CampaignListTable';
+import CampaignListFilters from './CampaignListFilters';
 import useTableFilters from '../hooks/useTableFilters';
 
 function CampaignListPage() {

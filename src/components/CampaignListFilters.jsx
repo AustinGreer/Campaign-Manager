@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, TextField, MenuItem, Button } from '@mui/material';
 import { CSVLink } from 'react-csv';
+import NewComposureModal from './NewComposureModal';
 
 const headers = [
   { label: "Name", key: "name" },
@@ -14,6 +15,8 @@ const headers = [
 
 
 function CampaignListFilters({ campaignList, statusFilter, setStatusFilter, dateFilter, setDateFilter }) {
+  const [openModal, setOpenModal] = useState(false);
+  
   return (
     <Box className="filter-controls">
       <TextField
@@ -37,18 +40,36 @@ function CampaignListFilters({ campaignList, statusFilter, setStatusFilter, date
         onChange={(e) => setDateFilter(e.target.value)}
       />
 
-      <Button sx={{ marginLeft: 'auto' }}>
-        <CSVLink
-          data={campaignList}
-          headers={headers}
-          filename="campaign_report.csv"
-          style={{ textDecoration: 'none', color: 'inherit' }}
+      <Box sx={{ marginLeft: 'auto', display: 'flex', gap: 2 }}>
+        <Button
+          variant='outlined'
+          size='small'
+          color='primary'
+          sx={{
+            textTransform: 'none'
+          }}
+          onClick={() => setOpenModal(true)}
         >
-          Export Report
-        </CSVLink>
-      </Button>
-    </Box>
+          New Compose
+        </Button>
 
+        <Button variant='contained' size='small' sx={{textTransform: 'none'}}>
+          <CSVLink
+            data={campaignList}
+            headers={headers}
+            filename="campaign_report.csv"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            Export Report
+          </CSVLink>
+        </Button>
+      </Box>
+
+      <NewComposureModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+      />
+    </Box>
   );
 }
 

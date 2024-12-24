@@ -1,7 +1,7 @@
 import './global.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import CampaignListPage from './pages/CampaignListPage';
+import CampaignListPage from './components/CampaignListPage';
 
 const NewCampaign = () => <div className="card">New Campaign Page</div>;
 
