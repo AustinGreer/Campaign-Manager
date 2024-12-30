@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 
 export default function useTableFilters(campaignList) {
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('s');
   const [order, setOrder] = useState('asc');
   const [statusFilter, setStatusFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
