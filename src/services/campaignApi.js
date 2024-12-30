@@ -8,3 +8,12 @@ export const getAllCampaigns = async () => {
     throw error;
   }
 }
+
+export const createCampaign = async (newCampaign) => {
+  try {
+    const response = await api.post("/campaigns", newCampaign);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

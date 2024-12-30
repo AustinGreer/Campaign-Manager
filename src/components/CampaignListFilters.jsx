@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, TextField, MenuItem, Button } from '@mui/material';
 import { CSVLink } from 'react-csv';
-import NewComposureModal from './NewComposureModal';
+import ComposeModal from './ComposeModal';
 
 const headers = [
   { label: "Name", key: "name" },
@@ -65,7 +65,7 @@ function CampaignListFilters({ campaignList, statusFilter, setStatusFilter, date
         </Button>
       </Box>
 
-      <NewComposureModal
+      <ComposeModal
         open={openModal}
         onClose={() => setOpenModal(false)}
       />
