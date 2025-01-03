@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, TextField, MenuItem, Button } from '@mui/material';
 import { CSVLink } from 'react-csv';
-import ComposeModal from './ComposeModal';
 
 const headers = [
   { label: "Name", key: "name" },
@@ -14,13 +13,12 @@ const headers = [
 ];
 
 
-function CampaignListFilters({ campaignList, statusFilter, setStatusFilter, dateFilter, setDateFilter }) {
-  const [openModal, setOpenModal] = useState(false);
-  
+function CampaignListFilters({ handleOpenModal, campaignList, statusFilter, setStatusFilter, dateFilter, setDateFilter }) {  
   return (
     <Box className="filter-controls">
       <TextField
         className="filter-control"
+        name="statusFilter"
         select
         label="Status Filter"
         value={statusFilter}
@@ -36,6 +34,7 @@ function CampaignListFilters({ campaignList, statusFilter, setStatusFilter, date
       <TextField
         className="filter-control"
         type="date"
+        name="date"
         value={dateFilter}
         onChange={(e) => setDateFilter(e.target.value)}
       />
@@ -48,7 +47,7 @@ function CampaignListFilters({ campaignList, statusFilter, setStatusFilter, date
           sx={{
             textTransform: 'none'
           }}
-          onClick={() => setOpenModal(true)}
+          onClick={handleOpenModal}
         >
           New Compose
         </Button>
@@ -64,11 +63,6 @@ function CampaignListFilters({ campaignList, statusFilter, setStatusFilter, date
           </CSVLink>
         </Button>
       </Box>
-
-      <ComposeModal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
-      />
     </Box>
   );
 }

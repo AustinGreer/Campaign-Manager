@@ -1,22 +1,26 @@
 import './global.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import CampaignListPage from './components/CampaignListPage';
 
-const NewCampaign = () => <div className="card">New Campaign Page</div>;
-
 function App() {
   return (
-    <Router>
-      <div className="app">
-        <main className="container">
-          <Routes>
-            <Route path="/" element={<CampaignListPage />} />
-            <Route path="/new-campaign" element={<NewCampaign />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+    <div className="app">
+      <main className="container">
+        <CampaignListPage />
+        <ToastContainer
+          position="bottom-left"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          pauseOnHover
+        />
+
+      </main>
+    </div>
   );
 }
 

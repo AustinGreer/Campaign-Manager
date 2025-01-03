@@ -1,91 +1,56 @@
-import { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import campaignSchema from '../utils/campaignSchema';
 import { createCampaign } from '../services/campaignApi';
 
-export default function useCampaignForm() {
-  const [formValues, setFormValues] = useState({
-    name: '',
-    description: '',
-    targetAudience: '',
-    startDate: '',
-    endDate: '',
-    notificationMessage: '',
+export default function useCampaignForm(handleRefresh) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset
+  } = useForm({
+    defaultValues: {
+      name: '',
+      description: '',
+      targetAudience: '',
+      startDate: '',
+      endDate: '',
+      notificationMessage: ''
+    },
+    resolver: yupResolver(campaignSchema),
+    mode: 'onSubmit'
   });
 
-  const [submitting, setSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formValues.name.trim()) {
-      newErrors.name = 'Campaign Name is required';
-    }
-
-    if (!formValues.notificationMessage.trim()) {
-      newErrors.notificationMessage = 'Notification Message is required';
-    }
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return false;
-    }
-
-    setErrors({});
-    return true;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleDateChange = (fieldName, newValue) => {
-    setFormValues((prev) => ({
-      ...prev,
-      [fieldName]: newValue,
-    }));
-  };
-
-  const handleSubmit = async () => {
-    if (!validateForm()) {
-      toast.error('Please fix validation errors');
-      return;
-    }
-    setSubmitting(true);
-
+  const onSubmit = async (values) => {
     try {
       const payload = {
-        ...formValues,
-        name: formValues.name.trim(),
-        description: formValues.description.trim(),
-        notificationMessage: formValues.notificationMessage.trim(),
+        ...values,
+        name: values.name.trim(),
+        description: values.description.trim(),
+        notificationMessage: values.notificationMessage.trim(),
         status: 'active',
         sends: 0,
-        clicks: 0,
+        clicks: 0
       };
 
-      const newCampaign = await createCampaign(payload);
+      await createCampaign(payload);
 
-      toast.success('Campaign created successfully!');
-      return newCampaign;
+      toast.success(`Added campaign ${values.name} successfully.`);
+      handleRefresh();
+      reset();
     } catch (error) {
-      console.error(error);
-      toast.error('Failed to create campaign');
-    } finally {
-      setSubmitting(false);
+      toast.error(`An error occurred while creating the campaign: ${error}`);
     }
-  };
+  }
 
   return {
-    formValues,
-    errors,
-    submitting,
-    handleChange,
-    handleDateChange,
+    control,
     handleSubmit,
+    onSubmit,
+    errors,
+    isSubmitting
   };
 }

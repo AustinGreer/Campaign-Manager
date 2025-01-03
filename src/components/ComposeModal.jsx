@@ -6,6 +6,7 @@ import {
   DialogActions,
   TextField,
   FormControl,
+  FormHelperText,
   InputLabel,
   Select,
   OutlinedInput,
@@ -13,116 +14,141 @@ import {
   Button,
   Box
 } from '@mui/material';
+import { Controller } from 'react-hook-form';
 
+import { availableAudiences } from '../utils/constants';
 import useCampaignForm from '../hooks/useCampaignForm';
 
-const availableAudiences = [
-  'Mobile Users',
-  'Email Subscribers',
-  'Push Notification Users'
-];
-
-function ComposeModal({ open, onClose }) {
-  const {
-    formValues,
-    errors,
-    submitting,
-    handleChange,
-    handleDateChange,
-    handleSubmit,
-  } = useCampaignForm();
+function ComposeModal({ open, onClose, handleRefresh }) {
+  const { control, handleSubmit, onSubmit, errors, isSubmitting } = useCampaignForm(handleRefresh)
 
   return (
     <Dialog
       open={open}
       onClose={onClose}
+      fullWidth
       PaperProps={{
         sx: {
           backgroundColor: '#2c2c2c',
-          color: '#fff',
-          '& .MuiFormLabel-root, & .MuiInputBase-root, & .MuiOutlinedInput-notchedOutline, & .MuiSelect-icon,& .MuiOutlinedInput-input': {
-            color: '#fff',
-          },
-        },
+          color: '#fff'
+        }
       }}
     >
-      <DialogTitle>New Campaign</DialogTitle>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <DialogTitle>New Campaign</DialogTitle>
 
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <TextField
-          name="name"
-          label="Campaign Name"
-          required
-          value={formValues.name}
-          onChange={handleChange}
-          error={!!errors.name}
-          helperText={errors.name}
-        />
+        <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Campaign Name"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+            )}
+          />
 
-        <TextField
-          name="description"
-          label="Description"
-          multiline
-          value={formValues.description}
-          onChange={handleChange}
-        />
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Description"
+                multiline
+              />
+            )}
+          />
 
-        <FormControl>
-          <InputLabel id="target-audience-label">Target Audience</InputLabel>
-          <Select
-            labelId="target-audience-label"
+          <Controller
             name="targetAudience"
-            value={formValues.targetAudience}
-            onChange={handleChange}
-            input={<OutlinedInput label="Target Audience" />}
+            control={control}
+            render={({ field }) => (
+              <FormControl>
+                <InputLabel id="target-audience-label">
+                  Target Audience
+                </InputLabel>
+                <Select
+                  {...field}
+                  labelId="target-audience-label"
+                  input={<OutlinedInput label="Target Audience" />}
+                >
+                  {availableAudiences.map((aud, index) => (
+                    <MenuItem key={index} value={aud}>
+                      {aud}
+                    </MenuItem>
+                  ))}
+                </Select>
+
+                {errors.targetAudience && (
+                  <FormHelperText sx={{ color: 'error.main' }}>
+                    {errors.targetAudience.message}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            )}
+          />
+
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Controller
+              name="startDate"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="date"
+                  label="Start Date"
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+
+            <Controller
+              name="endDate"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  type="date"
+                  label="End Date"
+                  InputLabelProps={{ shrink: true }}
+                />
+              )}
+            />
+          </Box>
+
+          <Controller
+            name="notificationMessage"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Notification Message"
+                multiline
+                error={!!errors.notificationMessage}
+                helperText={errors.notificationMessage?.message}
+              />
+            )}
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={onClose} variant="outlined" disabled={isSubmitting}>
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={isSubmitting}
           >
-            {availableAudiences.map(aud => (
-              <MenuItem key={aud} value={aud}>
-                {aud}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <TextField
-            name="startDate"
-            type="date"
-            label="Start Date"
-            value={formValues.startDate || ''}
-            onChange={(e) => handleDateChange('startDate', e.target.value)}
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            name="endDate"
-            type="date"
-            label="End Date"
-            value={formValues.endDate || ''}
-            onChange={(e) => handleDateChange('endDate', e.target.value)}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Box>
-
-        <TextField
-          name="notificationMessage"
-          label="Notification Message"
-          required
-          multiline
-          value={formValues.notificationMessage}
-          onChange={handleChange}
-          error={!!errors.notificationMessage}
-          helperText={errors.notificationMessage}
-        />
-      </DialogContent>
-
-      <DialogActions>
-        <Button onClick={onClose} variant="outlined" disabled={submitting}>
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary" disabled={submitting}>
-          {submitting ? 'Saving...' : 'Save'}
-        </Button>
-      </DialogActions>
+            {isSubmitting ? 'Saving...' : 'Save'}
+          </Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 }
