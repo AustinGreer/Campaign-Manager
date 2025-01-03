@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import campaignSchema from '../utils/campaignSchema';
-import { createCampaign } from '../services/campaignApi';
+import { createCampaign, sendCampaignNotification } from '../services/campaignApi';
 
 export default function useCampaignForm(handleRefresh) {
   const {
@@ -36,9 +36,20 @@ export default function useCampaignForm(handleRefresh) {
         clicks: 0
       };
 
-      await createCampaign(payload);
+      const newCampaign = await createCampaign(payload);
 
-      toast.success(`Added campaign ${values.name} successfully.`);
+      try {
+        await sendCampaignNotification({
+          ...newCampaign, // Use the created campaign data
+          notificationMessage: payload.notificationMessage
+        });
+        toast.success(`Campaign ${values.name} created and notification sent successfully.`);
+      } catch (notificationError) {
+        // Campaign was created but notification failed
+        toast.warning(`Campaign created but notification failed: ${notificationError.message}`);
+        console.error('Notification error:', notificationError);
+      }
+
       handleRefresh();
       reset();
     } catch (error) {
