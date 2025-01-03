@@ -28,7 +28,7 @@ export const sendCampaignNotification = async (campaignData) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `key=BEgBNK4z-G_B2SHVEcfrrZwdfsJS4d8_3_1RfaAfN0hVb8BDqMWOwzvgq-AwL8_y6ycGRL5l9ahPZFr3hLS9vVw`
+        'Authorization': `key=${process.env.REACT_APP_VAPID_KEY}`
       },
       body: JSON.stringify({
         to: fcmToken,
